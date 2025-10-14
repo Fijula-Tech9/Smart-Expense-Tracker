@@ -1,0 +1,335 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Smart Expense Tracker - Complete AWS Infrastructure'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: 'dev'
+    AllowedValues: ['dev', 'staging', 'prod']
+    Description: 'Environment name'
+  
+  KeyPairName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: 'EC2 Key Pair for SSH access'
+  
+  DBPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Description: 'MySQL database password'
+
+Resources:
+  # VPC Configuration
+  ExpenseTrackerVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: '10.0.0.0/16'
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-vpc-${Environment}'
+
+  # Internet Gateway
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-igw-${Environment}'
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref ExpenseTrackerVPC
+
+  # Public Subnets
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ExpenseTrackerVPC
+      AvailabilityZone: !Select [0, !GetAZs '']
+      CidrBlock: '10.0.1.0/24'
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-public-subnet-1-${Environment}'
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ExpenseTrackerVPC
+      AvailabilityZone: !Select [1, !GetAZs '']
+      CidrBlock: '10.0.2.0/24'
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-public-subnet-2-${Environment}'
+
+  # Private Application Subnets
+  PrivateAppSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ExpenseTrackerVPC
+      AvailabilityZone: !Select [0, !GetAZs '']
+      CidrBlock: '10.0.10.0/24'
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-private-app-subnet-1-${Environment}'
+
+  PrivateAppSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ExpenseTrackerVPC
+      AvailabilityZone: !Select [1, !GetAZs '']
+      CidrBlock: '10.0.11.0/24'
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-private-app-subnet-2-${Environment}'
+
+  # Private Database Subnets
+  PrivateDBSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ExpenseTrackerVPC
+      AvailabilityZone: !Select [0, !GetAZs '']
+      CidrBlock: '10.0.20.0/24'
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-private-db-subnet-1-${Environment}'
+
+  PrivateDBSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ExpenseTrackerVPC
+      AvailabilityZone: !Select [1, !GetAZs '']
+      CidrBlock: '10.0.21.0/24'
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-private-db-subnet-2-${Environment}'
+
+  # NAT Gateways
+  NatGateway1EIP:
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      Domain: vpc
+
+  NatGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGateway1EIP.AllocationId
+      SubnetId: !Ref PublicSubnet1
+
+  # Route Tables
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref ExpenseTrackerVPC
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-public-routes-${Environment}'
+
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet2
+
+  # Security Groups
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub 'expense-tracker-alb-sg-${Environment}'
+      GroupDescription: 'Security group for Application Load Balancer'
+      VpcId: !Ref ExpenseTrackerVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: '0.0.0.0/0'
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: '0.0.0.0/0'
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-alb-sg-${Environment}'
+
+  ApplicationSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub 'expense-tracker-app-sg-${Environment}'
+      GroupDescription: 'Security group for application servers'
+      VpcId: !Ref ExpenseTrackerVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: '10.0.0.0/16'
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-app-sg-${Environment}'
+
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub 'expense-tracker-db-sg-${Environment}'
+      GroupDescription: 'Security group for RDS database'
+      VpcId: !Ref ExpenseTrackerVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref ApplicationSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-db-sg-${Environment}'
+
+  # RDS Subnet Group
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: !Sub 'expense-tracker-db-subnet-group-${Environment}'
+      DBSubnetGroupDescription: 'Subnet group for RDS database'
+      SubnetIds:
+        - !Ref PrivateDBSubnet1
+        - !Ref PrivateDBSubnet2
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-db-subnet-group-${Environment}'
+
+  # RDS Database
+  DatabaseInstance:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    Properties:
+      DBInstanceIdentifier: !Sub 'expense-tracker-db-${Environment}'
+      DBInstanceClass: !If [IsProd, 'db.t3.medium', 'db.t3.micro']
+      Engine: MySQL
+      EngineVersion: '8.0.35'
+      MasterUsername: 'admin'
+      MasterUserPassword: !Ref DBPassword
+      AllocatedStorage: '100'
+      StorageType: 'gp3'
+      StorageEncrypted: true
+      MultiAZ: !If [IsProd, true, false]
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      VPCSecurityGroups:
+        - !Ref DatabaseSecurityGroup
+      BackupRetentionPeriod: 7
+      PreferredBackupWindow: '03:00-04:00'
+      PreferredMaintenanceWindow: 'sun:04:00-sun:05:00'
+      DeletionProtection: !If [IsProd, true, false]
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-db-${Environment}'
+
+  # ElastiCache Subnet Group
+  CacheSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      CacheSubnetGroupName: !Sub 'expense-tracker-cache-subnet-group-${Environment}'
+      Description: 'Subnet group for ElastiCache'
+      SubnetIds:
+        - !Ref PrivateAppSubnet1
+        - !Ref PrivateAppSubnet2
+
+  # ElastiCache Redis Cluster
+  RedisCluster:
+    Type: AWS::ElastiCache::ReplicationGroup
+    Properties:
+      ReplicationGroupId: !Sub 'expense-tracker-redis-${Environment}'
+      Description: 'Redis cluster for application caching'
+      NodeType: !If [IsProd, 'cache.r6g.large', 'cache.t3.micro']
+      NumCacheClusters: 2
+      Engine: 'redis'
+      EngineVersion: '7.0'
+      CacheSubnetGroupName: !Ref CacheSubnetGroup
+      SecurityGroupIds:
+        - !Ref CacheSecurityGroup
+      AtRestEncryptionEnabled: true
+      TransitEncryptionEnabled: true
+
+  CacheSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub 'expense-tracker-cache-sg-${Environment}'
+      GroupDescription: 'Security group for Redis cache'
+      VpcId: !Ref ExpenseTrackerVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 6379
+          ToPort: 6379
+          SourceSecurityGroupId: !Ref ApplicationSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub 'expense-tracker-cache-sg-${Environment}'
+
+  # S3 Bucket for application assets
+  ApplicationBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'expense-tracker-assets-${Environment}-${AWS::AccountId}'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+Conditions:
+  IsProd: !Equals [!Ref Environment, 'prod']
+
+Outputs:
+  VPCId:
+    Description: 'VPC ID'
+    Value: !Ref ExpenseTrackerVPC
+    Export:
+      Name: !Sub '${AWS::StackName}-VPC-ID'
+
+  DatabaseEndpoint:
+    Description: 'RDS MySQL database endpoint'
+    Value: !GetAtt DatabaseInstance.Endpoint.Address
+    Export:
+      Name: !Sub '${AWS::StackName}-DB-Endpoint'
+
+  RedisEndpoint:
+    Description: 'ElastiCache Redis endpoint'
+    Value: !GetAtt RedisCluster.RedisEndpoint.Address
+    Export:
+      Name: !Sub '${AWS::StackName}-Redis-Endpoint'
+
+  ApplicationSecurityGroupId:
+    Description: 'Application Security Group ID'
+    Value: !Ref ApplicationSecurityGroup
+    Export:
+      Name: !Sub '${AWS::StackName}-App-SG-ID'
+
+  PrivateSubnetIds:
+    Description: 'Private subnet IDs for application deployment'
+    Value: !Join [',', [!Ref PrivateAppSubnet1, !Ref PrivateAppSubnet2]]
+    Export:
+      Name: !Sub '${AWS::StackName}-Private-Subnets'
