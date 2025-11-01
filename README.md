@@ -1,4 +1,4 @@
-# 🚀 Smart Expense Tracker - Backend API
+# Smart Expense Tracker - Backend API
 
 A comprehensive RESTful backend system for personal finance management built with **Spring Boot 3.2** and **Java 17**.
 
@@ -8,32 +8,32 @@ A comprehensive RESTful backend system for personal finance management built wit
 [![JWT](https://img.shields.io/badge/JWT-Authentication-yellow.svg)](https://jwt.io/)
 [![Swagger](https://img.shields.io/badge/Swagger-API%20Docs-green.svg)](https://swagger.io/)
 
-## 📋 Features
+## Features
 
-- 🔐 **JWT Authentication**: Secure token-based authentication system
-- 💰 **Transaction Management**: Track income and expenses with categorization
-- 📊 **Budget Tracking**: Set budgets and receive automated alerts
-- 📈 **Financial Reports**: Monthly summaries, trends, and analytics
-- 📚 **Interactive API Documentation**: Swagger UI for easy testing
-- 🛡️ **Security**: BCrypt password hashing, CORS, and input validation
-- � **H2 In-Memory Database**: Zero-configuration database for development
-- 🎯 **Production Ready**: Comprehensive error handling and logging
+- **JWT Authentication**: Secure token-based authentication system
+- **Transaction Management**: Track income and expenses with categorization
+- **Budget Tracking**: Set budgets and receive automated alerts
+- **Financial Reports**: Monthly summaries, trends, and analytics
+- **Interactive API Documentation**: Swagger UI for easy testing
+- **Security**: BCrypt password hashing, CORS, and input validation
+- **H2 In-Memory Database**: Zero-configuration database for development
+- **Production Ready**: Comprehensive error handling and logging
 
-## 🛠️ Prerequisites
+## Prerequisites
 
 **Minimum Requirements:**
 
-- ☕ **Java 17 or higher**
-- 📦 **Maven 3.6+**
-- 🖥️ **Any modern IDE** (IntelliJ IDEA, VS Code, Eclipse)
+- **Java 17 or higher**
+- **Maven 3.6+**
+- **Any modern IDE** (IntelliJ IDEA, VS Code, Eclipse)
 
-**No Database Installation Required!** ✨
+**No Database Installation Required!**
 
-> > **💡 Dual Database Support!**  
+> > **Dual Database Support!**  
 > > Production: MySQL database for production environments  
 > > Development: H2 in-memory database for easy development and testing
 
-## ⚡ Quick Start (< 2 minutes)
+## Quick Start (< 2 minutes)
 
 ### Step 1: Verify Prerequisites
 
@@ -59,14 +59,14 @@ cd "Expense Tracker_MSProject"
 
 ### Step 3: Choose Your Database & Run
 
-#### 🚀 Option A: Quick Start (H2 Development Database)
+#### Option A: Quick Start (H2 Development Database)
 
 ```bash
 # Run with H2 in-memory database (fastest setup)
 mvn clean spring-boot:run -Dspring.profiles.active=dev
 ```
 
-#### 🏭 Option B: Production Setup (MySQL Database)
+#### Option B: Production Setup (MySQL Database)
 
 ```bash
 # 1. Setup MySQL database
@@ -76,28 +76,28 @@ mvn clean spring-boot:run -Dspring.profiles.active=dev
 mvn clean spring-boot:run -Dspring.profiles.active=prod
 ```
 
-**That's it!** 🎉 The application will start with:
+**That's it!** The application will start with:
 
-- ✅ Automatic database creation & migration
-- ✅ Sample data loading
-- ✅ Security configuration
-- ✅ API documentation setup
+- Automatic database creation & migration
+- Sample data loading
+- Security configuration
+- API documentation setup
 
 ### Step 4: Verify Installation
 
 Open your browser and visit:
 
-- **🏠 Application**: http://localhost:8080
-- **📚 Swagger UI**: http://localhost:8080/swagger-ui.html
-- **🗄️ H2 Console**: http://localhost:8080/h2-console
+- **Application**: http://localhost:8080
+- **Swagger UI**: http://localhost:8080/swagger-ui.html
+- **H2 Console**: http://localhost:8080/h2-console
 
-## 🗄️ Database Configuration
+## Database Configuration
 
-### 📊 Dual Database Support
+### Dual Database Support
 
 This application supports both **MySQL** (production) and **H2** (development) databases:
 
-#### 🏭 MySQL Database (Production)
+#### MySQL Database (Production)
 
 - **Primary database** for production environments
 - **Persistent data** storage
@@ -119,7 +119,7 @@ mvn spring-boot:run -Dspring.profiles.active=prod
 - **Username**: expense_user
 - **Password**: expense_password
 
-#### ⚡ H2 Database (Development)
+#### H2 Database (Development)
 
 - **In-memory database** for quick development
 - **Zero configuration** required
@@ -144,11 +144,11 @@ mvn spring-boot:run -Dspring.profiles.active=dev
 
 Both databases automatically load system categories:
 
-**📈 Income Categories:**
+**Income Categories:**
 
 - Salary, Freelance, Investment, Gift, Other Income
 
-**📉 Expense Categories:**
+**Expense Categories:**
 
 - Food & Dining, Transportation, Housing, Utilities
 - Healthcare, Entertainment, Shopping, Education, Insurance
@@ -161,7 +161,7 @@ Both databases automatically load system categories:
 | `prod`  | MySQL        | Production            | `mvn spring-boot:run -Dspring.profiles.active=prod` |
 | `test`  | H2 Test DB   | Unit Testing          | `mvn test -Dspring.profiles.active=test`            |
 
-## 🧪 API Testing Guide
+## API Testing Guide
 
 ### 1. Using Swagger UI (Recommended)
 
@@ -232,39 +232,39 @@ curl -X GET http://localhost:8080/api/users/profile \
    - `authToken`: JWT token from login response
 3. **Authorization**: Bearer Token with `{{authToken}}`
 
-## 📁 Project Architecture
+## Project Architecture
 
-### 🏗️ Clean Architecture Structure
+### Clean Architecture Structure
 
 ```
-📦 Smart Expense Tracker
-├── 🏠 src/main/java/com/expense/tracker/
-│   ├── 🚀 ExpenseTrackerApplication.java    # Main Spring Boot Application
+Smart Expense Tracker
+├── src/main/java/com/expense/tracker/
+│   ├── ExpenseTrackerApplication.java    # Main Spring Boot Application
 │   │
-│   ├── ⚙️ config/                          # Configuration Layer
+│   ├── config/                          # Configuration Layer
 │   │   ├── SecurityConfig.java             # JWT & CORS Security
 │   │   ├── CacheConfig.java               # Redis Cache Configuration
 │   │   └── SwaggerConfig.java             # API Documentation
 │   │
-│   ├── 🌐 controller/                      # Presentation Layer
+│   ├── controller/                      # Presentation Layer
 │   │   └── AuthController.java            # Authentication Endpoints
 │   │
-│   ├── 🧠 service/                         # Business Logic Layer
+│   ├── service/                         # Business Logic Layer
 │   │   └── AuthService.java               # Authentication Business Logic
 │   │
-│   ├── 🗄️ repository/                      # Data Access Layer
+│   ├── repository/                      # Data Access Layer
 │   │   ├── UserRepository.java            # User Data Operations
 │   │   ├── TransactionRepository.java     # Transaction CRUD + Analytics
 │   │   ├── CategoryRepository.java        # Category Management
 │   │   └── BudgetRepository.java          # Budget Tracking
 │   │
-│   ├── 📊 model/                          # Domain Entities
+│   ├── model/                          # Domain Entities
 │   │   ├── User.java                      # User Entity with Relationships
 │   │   ├── Transaction.java               # Financial Transaction Entity
 │   │   ├── Category.java                  # Income/Expense Categories
 │   │   └── Budget.java                    # Budget Tracking Entity
 │   │
-│   ├── 📦 dto/                            # Data Transfer Objects
+│   ├── dto/                            # Data Transfer Objects
 │   │   ├── request/                       # API Request DTOs
 │   │   │   ├── LoginRequest.java
 │   │   │   ├── RegisterRequest.java
@@ -276,42 +276,42 @@ curl -X GET http://localhost:8080/api/users/profile \
 │   │       ├── TransactionResponse.java
 │   │       └── ReportResponse.java
 │   │
-│   ├── 🔐 security/                       # Security Components
+│   ├── security/                       # Security Components
 │   │   ├── JwtUtil.java                   # JWT Token Management
 │   │   ├── JwtAuthenticationFilter.java   # Request Authentication Filter
 │   │   └── UserDetailsServiceImpl.java    # User Authentication Service
 │   │
-│   ├── ⚠️ exception/                       # Exception Handling
+│   ├── exception/                       # Exception Handling
 │   │   ├── GlobalExceptionHandler.java    # Centralized Error Handling
 │   │   ├── ResourceNotFoundException.java
 │   │   ├── DuplicateResourceException.java
 │   │   └── UnauthorizedException.java
 │   │
-│   └── 🏷️ enums/                          # Business Enumerations
+│   └── enums/                          # Business Enumerations
 │       ├── TransactionType.java           # INCOME, EXPENSE
 │       ├── CategoryType.java              # System vs Custom Categories
 │       └── AlertType.java                 # Budget Alert Types
 │
-├── 📋 src/main/resources/
+├── src/main/resources/
 │   ├── application.properties             # Application Configuration
 │   └── data.sql                          # Initial System Data
 │
-└── 📄 Project Files
+└── Project Files
     ├── pom.xml                           # Maven Dependencies
     ├── README.md                         # This Documentation
     └── install.sh                        # Automated Setup Script
 ```
 
-### 🎯 Key Design Patterns
+### Key Design Patterns
 
-- **🏗️ Layered Architecture**: Clear separation of concerns
-- **📦 Repository Pattern**: Data access abstraction
-- **🔒 JWT Security**: Stateless authentication
-- **📊 DTO Pattern**: Clean API contracts
-- **⚠️ Global Exception Handling**: Consistent error responses
-- **🏷️ Builder Pattern**: Clean object construction (Lombok)
+- **Layered Architecture**: Clear separation of concerns
+- **Repository Pattern**: Data access abstraction
+- **JWT Security**: Stateless authentication
+- **DTO Pattern**: Clean API contracts
+- **Global Exception Handling**: Consistent error responses
+- **Builder Pattern**: Clean object construction (Lombok)
 
-### 🔗 Entity Relationships
+### Entity Relationships
 
 ```mermaid
 erDiagram
@@ -361,9 +361,9 @@ erDiagram
     }
 ```
 
-## � Development Guide
+## Development Guide
 
-### 🚀 Development Workflow
+### Development Workflow
 
 ```bash
 # 1. Start development server with live reload
@@ -379,7 +379,7 @@ erDiagram
 ./mvnw clean compile -DskipTests
 ```
 
-### 🗄️ Database Management
+### Database Management
 
 #### MySQL Database (Production)
 
@@ -410,11 +410,11 @@ Both databases automatically load sample categories:
 
 | Category Name     | Type    | Description           |
 | ----------------- | ------- | --------------------- |
-| 🍕 Food & Dining  | EXPENSE | Restaurant, groceries |
-| 🏠 Housing        | EXPENSE | Rent, utilities       |
-| 🚗 Transportation | EXPENSE | Gas, public transport |
-| 💰 Salary         | INCOME  | Primary income        |
-| 💼 Freelance      | INCOME  | Additional income     |
+| Food & Dining  | EXPENSE | Restaurant, groceries |
+| Housing        | EXPENSE | Rent, utilities       |
+| Transportation | EXPENSE | Gas, public transport |
+| Salary         | INCOME  | Primary income        |
+| Freelance      | INCOME  | Additional income     |
 
 #### Database Schema Inspection
 
@@ -446,13 +446,13 @@ DESCRIBE transactions;
 SELECT * FROM categories WHERE is_system_category = true;
 ```
 
-### ⚙️ Core Configuration
+### Core Configuration
 
 ```properties
-# 🌐 Server Configuration
+# Server Configuration
 server.port=8080
 
-# 🗄️ H2 Database Configuration
+# H2 Database Configuration
 spring.datasource.url=jdbc:h2:mem:expensedb
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
@@ -460,23 +460,23 @@ spring.datasource.password=
 spring.sql.init.mode=always
 spring.jpa.defer-datasource-initialization=true
 
-# 🏗️ JPA Configuration
+# JPA Configuration
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.open-in-view=false
 
-# 🔐 Security Configuration
+# Security Configuration
 jwt.secret=mySecretKey123!@#ExpenseTracker2024
 jwt.expiration=86400000
 
-# 📚 Swagger Documentation
+# Swagger Documentation
 springdoc.api-docs.path=/api-docs
 springdoc.swagger-ui.path=/swagger-ui.html
 ```
 
-## �🔧 Troubleshooting Guide
+## Troubleshooting Guide
 
-### 🚨 Common Issues & Solutions
+### Common Issues & Solutions
 
 #### 1. **Port 8080 Already in Use**
 
@@ -540,9 +540,9 @@ curl -X POST http://localhost:8080/auth/register \
   -d '{"name":"Test","email":"test@test.com","password":"password123"}'
 ```
 
-## 🚀 Deployment Guide
+## Deployment Guide
 
-### 🐳 Docker Deployment
+### Docker Deployment
 
 #### Build Docker Image
 
@@ -581,11 +581,11 @@ services:
       retries: 3
 ```
 
-### ☁️ Cloud Deployment
+### Cloud Deployment
 
-> ⚠️ **Note**: Cloud deployment configurations below are **future enhancements**. The application currently runs locally or via Docker.
+> **Note**: Cloud deployment configurations below are **future enhancements**. The application currently runs locally or via Docker.
 
-#### 🚀 AWS Deployment (Elastic Beanstalk) - **Future Enhancement**
+#### AWS Deployment (Elastic Beanstalk) - **Future Enhancement**
 
 > **Status**: AWS deployment is **not configured**. The CloudFormation template (`aws-infrastructure.yml`) exists for future use, but infrastructure is **not deployed**.
 
@@ -602,17 +602,15 @@ eb deploy
 ```
 
 **Current Deployment Options**:
-
-- ✅ **Local Development**: `mvn spring-boot:run` (H2 or MySQL)
-- ✅ **Docker**: `docker build && docker run` (see Docker section above)
-- ❌ **AWS Cloud**: **Not configured** - planned for future
+- **Local Development**: `mvn spring-boot:run` (H2 or MySQL)
+- **Docker**: `docker build && docker run` (see Docker section above)
+- **AWS Cloud**: **Not configured** - planned for future
 
 **AWS Infrastructure Status**:
-
-- ✅ CloudFormation template prepared (`aws-infrastructure.yml`)
-- ✅ Deployment scripts available (`deploy-aws.sh`)
-- ❌ AWS account setup: **Not completed**
-- ❌ Infrastructure deployment: **Not deployed**
+- CloudFormation template prepared (`aws-infrastructure.yml`)
+- Deployment scripts available (`deploy-aws.sh`)
+- AWS account setup: **Not completed**
+- Infrastructure deployment: **Not deployed**
 
 **Cost Consideration**: AWS production deployment costs **$300-800/month minimum**. Suitable for production environments with high traffic requirements.
 
@@ -629,48 +627,48 @@ git add . && git commit -m "Deploy to Heroku"
 git push heroku main
 ```
 
-## 🎯 Roadmap & Next Steps
+## Roadmap & Next Steps
 
-### 🏁 Phase 1: Core Features (Current)
+### Phase 1: Core Features (Current)
 
-- ✅ **Authentication System**: JWT-based user registration and login
-- ✅ **Database Setup**: H2 in-memory database with entity relationships
-- ✅ **API Documentation**: Swagger UI integration
-- ✅ **Security**: BCrypt password hashing, CORS configuration
-- 🔄 **Transaction Management**: CRUD operations for income/expense tracking
-- 🔄 **Category System**: User-defined and system categories
+- **Authentication System**: JWT-based user registration and login
+- **Database Setup**: H2 in-memory database with entity relationships
+- **API Documentation**: Swagger UI integration
+- **Security**: BCrypt password hashing, CORS configuration
+- **Transaction Management**: CRUD operations for income/expense tracking
+- **Category System**: User-defined and system categories
 
-### 🚀 Phase 2: Advanced Features (Planned)
+### Phase 2: Advanced Features (Planned)
 
-- 📊 **Financial Reports**: Monthly/yearly spending analysis
-- 📈 **Budget Tracking**: Set limits and get alerts
-- 📱 **Mobile API**: Optimized endpoints for mobile apps
-- 🔔 **Notifications**: Email alerts for budget limits
-- 📄 **Data Export**: CSV/PDF report generation
-- 🔍 **Search & Filters**: Advanced transaction filtering
+- **Financial Reports**: Monthly/yearly spending analysis
+- **Budget Tracking**: Set limits and get alerts
+- **Mobile API**: Optimized endpoints for mobile apps
+- **Notifications**: Email alerts for budget limits
+- **Data Export**: CSV/PDF report generation
+- **Search & Filters**: Advanced transaction filtering
 
-### 🌟 Phase 3: Premium Features (Future)
+### Phase 3: Premium Features (Future)
 
-- 🤖 **AI Insights**: Spending pattern analysis
-- 🏦 **Bank Integration**: Automatic transaction import
-- 👥 **Multi-user Support**: Family expense sharing
-- 📊 **Advanced Analytics**: Machine learning predictions
-- 🌍 **Multi-currency**: International transaction support
+- **AI Insights**: Spending pattern analysis
+- **Bank Integration**: Automatic transaction import
+- **Multi-user Support**: Family expense sharing
+- **Advanced Analytics**: Machine learning predictions
+- **Multi-currency**: International transaction support
 
-### ☁️ Phase 4: Cloud Infrastructure (Future Enhancement)
+### Phase 4: Cloud Infrastructure (Future Enhancement)
 
-> ⚠️ **Note**: Cloud infrastructure features below are **planned** but **not currently deployed**.
+> **Note**: Cloud infrastructure features below are **planned** but **not currently deployed**.
 
-- 🚀 **AWS Deployment**: EC2, RDS, ElastiCache infrastructure
-- 📊 **Cloud Monitoring**: CloudWatch integration and alerts
-- 🔄 **Event Streaming**: Apache Kafka for async processing
-- 🔁 **CI/CD Pipeline**: Automated deployment workflows
-- ⚡ **Auto-scaling**: Dynamic resource allocation
-- 🌐 **Load Balancing**: Multi-region deployment
+- **AWS Deployment**: EC2, RDS, ElastiCache infrastructure
+- **Cloud Monitoring**: CloudWatch integration and alerts
+- **Event Streaming**: Apache Kafka for async processing
+- **CI/CD Pipeline**: Automated deployment workflows
+- **Auto-scaling**: Dynamic resource allocation
+- **Load Balancing**: Multi-region deployment
 
-## 📚 Complete API Reference
+## Complete API Reference
 
-### 🔐 Authentication Endpoints
+### Authentication Endpoints
 
 ```http
 POST   /auth/register          # Create new user account
@@ -680,7 +678,7 @@ POST   /auth/refresh           # Refresh JWT token
 POST   /auth/logout            # Invalidate token
 ```
 
-### 👤 User Management (Planned)
+### User Management (Planned)
 
 ```http
 GET    /api/user/profile       # Get user profile
@@ -689,7 +687,7 @@ DELETE /api/user/account       # Delete user account
 POST   /api/user/change-password # Change password
 ```
 
-### 💰 Transaction Management (In Development)
+### Transaction Management (In Development)
 
 ```http
 GET    /api/transactions       # List user transactions
@@ -700,7 +698,7 @@ DELETE /api/transactions/{id}  # Delete transaction
 GET    /api/transactions/search # Search transactions
 ```
 
-### 🏷️ Category Management (Planned)
+### Category Management (Planned)
 
 ```http
 GET    /api/categories         # List all categories
@@ -709,7 +707,7 @@ PUT    /api/categories/{id}    # Update category
 DELETE /api/categories/{id}    # Delete category
 ```
 
-### 📊 Reports & Analytics (Future)
+### Reports & Analytics (Future)
 
 ```http
 GET    /api/reports/monthly    # Monthly spending report
@@ -718,9 +716,9 @@ GET    /api/reports/category   # Category-wise breakdown
 POST   /api/reports/export     # Export data (CSV/PDF)
 ```
 
-## 🛡️ Security & Best Practices
+## Security & Best Practices
 
-### 🔒 Security Features
+### Security Features
 
 - **JWT Authentication**: Stateless token-based auth (24h expiration)
 - **Password Security**: BCrypt hashing with strength 12
@@ -729,7 +727,7 @@ POST   /api/reports/export     # Export data (CSV/PDF)
 - **SQL Injection Prevention**: JPA with parameterized queries
 - **XSS Protection**: Input sanitization and encoding
 
-### 📋 Best Practices Implemented
+### Best Practices Implemented
 
 - **Clean Architecture**: Layered design with clear separation
 - **DTO Pattern**: Secure data transfer objects
@@ -738,7 +736,7 @@ POST   /api/reports/export     # Export data (CSV/PDF)
 - **Lombok Integration**: Reduced boilerplate code
 - **Swagger Documentation**: Interactive API testing
 
-### 🔧 Configuration Security
+### Configuration Security
 
 ```properties
 # Production security settings
@@ -748,13 +746,13 @@ logging.level.org.hibernate.SQL=ERROR   # Hide SQL in logs
 spring.jpa.show-sql=false               # Disable SQL logging
 ```
 
-## 📄 License & Contributing
+## License & Contributing
 
-### 📄 License
+### License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-### 🤝 Contributing Guidelines
+### Contributing Guidelines
 
 #### Getting Started
 
@@ -784,16 +782,16 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-## 🆘 Support & Help
+## Support & Help
 
-### 📞 Getting Help
+### Getting Help
 
-- **📖 Documentation**: Check this README first
-- **🐛 Issues**: Create a GitHub issue for bugs
-- **💡 Features**: Request features via GitHub issues
-- **❓ Questions**: Use GitHub discussions
+- **Documentation**: Check this README first
+- **Issues**: Create a GitHub issue for bugs
+- **Features**: Request features via GitHub issues
+- **Questions**: Use GitHub discussions
 
-### 🔍 Useful Commands
+### Useful Commands
 
 ```bash
 # Check application status
@@ -809,7 +807,7 @@ open http://localhost:8080/swagger-ui.html
 ./mvnw clean test install
 ```
 
-### 📊 Monitoring & Metrics
+### Monitoring & Metrics
 
 ```bash
 # Application metrics
@@ -825,6 +823,6 @@ curl http://localhost:8080/actuator/env
 ---
 
 <p align="center">
-  <strong>🌟 Star this repository if it helped you! 🌟</strong><br>
-  <em>Built with ❤️ using Spring Boot & modern Java practices</em>
+  <strong>Master Project ! Star this repository if it helped you!</strong><br>
+  <em>Built with using Spring Boot & modern Java practices</em>
 </p>
