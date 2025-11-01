@@ -21,11 +21,11 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "transactions", 
     indexes = {
-        @Index(name = "idx_user_date", columnList = "user_id, transaction_date"),
-        @Index(name = "idx_user_type_date", columnList = "user_id, type, transaction_date"),
-        @Index(name = "idx_category", columnList = "category_id"),
-        @Index(name = "idx_user_deleted", columnList = "user_id, is_deleted"),
-        @Index(name = "idx_amount", columnList = "amount")
+    @Index(name = "idx_transactions_user_date", columnList = "user_id, transaction_date"),
+    @Index(name = "idx_transactions_user_type_date", columnList = "user_id, type, transaction_date"),
+    @Index(name = "idx_transactions_category", columnList = "category_id"),
+    @Index(name = "idx_transactions_user_deleted", columnList = "user_id, is_deleted"),
+    @Index(name = "idx_transactions_amount", columnList = "amount")
     }
 )
 @Data
