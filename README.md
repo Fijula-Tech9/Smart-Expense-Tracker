@@ -602,11 +602,13 @@ eb deploy
 ```
 
 **Current Deployment Options**:
+
 - ✅ **Local Development**: `mvn spring-boot:run` (H2 or MySQL)
 - ✅ **Docker**: `docker build && docker run` (see Docker section above)
 - ❌ **AWS Cloud**: **Not configured** - planned for future
 
 **AWS Infrastructure Status**:
+
 - ✅ CloudFormation template prepared (`aws-infrastructure.yml`)
 - ✅ Deployment scripts available (`deploy-aws.sh`)
 - ❌ AWS account setup: **Not completed**
