@@ -22,14 +22,16 @@ A comprehensive RESTful backend system for personal finance management built wit
 ## 🛠️ Prerequisites
 
 **Minimum Requirements:**
+
 - ☕ **Java 17 or higher**
 - 📦 **Maven 3.6+**
 - 🖥️ **Any modern IDE** (IntelliJ IDEA, VS Code, Eclipse)
 
 **No Database Installation Required!** ✨
+
 > > **💡 Dual Database Support!**  
-> Production: MySQL database for production environments  
-> Development: H2 in-memory database for easy development and testing
+> > Production: MySQL database for production environments  
+> > Development: H2 in-memory database for easy development and testing
 
 ## ⚡ Quick Start (< 2 minutes)
 
@@ -75,6 +77,7 @@ mvn clean spring-boot:run -Dspring.profiles.active=prod
 ```
 
 **That's it!** 🎉 The application will start with:
+
 - ✅ Automatic database creation & migration
 - ✅ Sample data loading
 - ✅ Security configuration
@@ -83,6 +86,7 @@ mvn clean spring-boot:run -Dspring.profiles.active=prod
 ### Step 4: Verify Installation
 
 Open your browser and visit:
+
 - **🏠 Application**: http://localhost:8080
 - **📚 Swagger UI**: http://localhost:8080/swagger-ui.html
 - **🗄️ H2 Console**: http://localhost:8080/h2-console
@@ -94,6 +98,7 @@ Open your browser and visit:
 This application supports both **MySQL** (production) and **H2** (development) databases:
 
 #### 🏭 MySQL Database (Production)
+
 - **Primary database** for production environments
 - **Persistent data** storage
 - **Better performance** for large datasets
@@ -108,12 +113,14 @@ mvn spring-boot:run -Dspring.profiles.active=prod
 ```
 
 **MySQL Connection Details:**
+
 - **Host**: localhost:3306
 - **Database**: expense_tracker
 - **Username**: expense_user
 - **Password**: expense_password
 
 #### ⚡ H2 Database (Development)
+
 - **In-memory database** for quick development
 - **Zero configuration** required
 - **Built-in web console** for data inspection
@@ -130,7 +137,7 @@ mvn spring-boot:run -Dspring.profiles.active=dev
 2. **Connection Settings**:
    - **JDBC URL**: `jdbc:h2:mem:expense_tracker`
    - **User Name**: `sa`
-   - **Password**: *(leave empty)*
+   - **Password**: _(leave empty)_
 3. **Click Connect** to access your data
 
 ### Pre-loaded System Categories
@@ -138,19 +145,21 @@ mvn spring-boot:run -Dspring.profiles.active=dev
 Both databases automatically load system categories:
 
 **📈 Income Categories:**
+
 - Salary, Freelance, Investment, Gift, Other Income
 
 **📉 Expense Categories:**
+
 - Food & Dining, Transportation, Housing, Utilities
 - Healthcare, Entertainment, Shopping, Education, Insurance
 
 ### Environment Profiles
 
-| Profile | Database | Use Case | Command |
-|---------|----------|----------|---------|
-| `dev` | H2 In-Memory | Development & Testing | `mvn spring-boot:run -Dspring.profiles.active=dev` |
-| `prod` | MySQL | Production | `mvn spring-boot:run -Dspring.profiles.active=prod` |
-| `test` | H2 Test DB | Unit Testing | `mvn test -Dspring.profiles.active=test` |
+| Profile | Database     | Use Case              | Command                                             |
+| ------- | ------------ | --------------------- | --------------------------------------------------- |
+| `dev`   | H2 In-Memory | Development & Testing | `mvn spring-boot:run -Dspring.profiles.active=dev`  |
+| `prod`  | MySQL        | Production            | `mvn spring-boot:run -Dspring.profiles.active=prod` |
+| `test`  | H2 Test DB   | Unit Testing          | `mvn test -Dspring.profiles.active=test`            |
 
 ## 🧪 API Testing Guide
 
@@ -165,6 +174,7 @@ Both databases automatically load system categories:
 ### 2. Using cURL Commands
 
 #### Register a New User
+
 ```bash
 curl -X POST http://localhost:8080/api/auth/register \
   -H "Content-Type: application/json" \
@@ -176,6 +186,7 @@ curl -X POST http://localhost:8080/api/auth/register \
 ```
 
 **Expected Response:**
+
 ```json
 {
   "message": "Authentication successful",
@@ -190,6 +201,7 @@ curl -X POST http://localhost:8080/api/auth/register \
 ```
 
 #### User Login
+
 ```bash
 curl -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
@@ -200,6 +212,7 @@ curl -X POST http://localhost:8080/api/auth/login \
 ```
 
 #### Using JWT Token for Authenticated Requests
+
 ```bash
 # Save the token from login response
 TOKEN="eyJhbGciOiJIUzI1NiJ9..."
@@ -212,6 +225,7 @@ curl -X GET http://localhost:8080/api/users/profile \
 ### 3. Postman Collection
 
 **Setup Instructions:**
+
 1. **Base URL**: `http://localhost:8080`
 2. **Environment Variables**:
    - `baseUrl`: `http://localhost:8080`
@@ -306,7 +320,7 @@ erDiagram
     USER ||--o{ CATEGORY : owns
     CATEGORY ||--o{ TRANSACTION : categorizes
     CATEGORY ||--o{ BUDGET : tracks
-    
+
     USER {
         Long id PK
         String name
@@ -316,7 +330,7 @@ erDiagram
         LocalDateTime createdAt
         LocalDateTime updatedAt
     }
-    
+
     TRANSACTION {
         Long id PK
         Long userId FK
@@ -328,7 +342,7 @@ erDiagram
         String paymentMethod
         Boolean isDeleted
     }
-    
+
     CATEGORY {
         Long id PK
         Long userId FK "nullable for system categories"
@@ -336,7 +350,7 @@ erDiagram
         CategoryType type
         Boolean isSystemCategory
     }
-    
+
     BUDGET {
         Long id PK
         Long userId FK
@@ -368,6 +382,7 @@ erDiagram
 ### 🗄️ Database Management
 
 #### MySQL Database (Production)
+
 ```bash
 # Setup MySQL database
 ./setup-mysql.sh
@@ -383,25 +398,28 @@ SELECT * FROM categories WHERE is_system_category = true;
 ```
 
 #### H2 Console Access (Development)
-- **URL**: http://localhost:8080/h2-console *(dev profile only)*
+
+- **URL**: http://localhost:8080/h2-console _(dev profile only)_
 - **JDBC URL**: `jdbc:h2:mem:expense_tracker`
 - **Username**: `sa`
-- **Password**: *(leave blank)*
+- **Password**: _(leave blank)_
 
 #### Pre-loaded Test Data
+
 Both databases automatically load sample categories:
 
-| Category Name | Type | Description |
-|--------------|------|-------------|
-| 🍕 Food & Dining | EXPENSE | Restaurant, groceries |
-| 🏠 Housing | EXPENSE | Rent, utilities |
+| Category Name     | Type    | Description           |
+| ----------------- | ------- | --------------------- |
+| 🍕 Food & Dining  | EXPENSE | Restaurant, groceries |
+| 🏠 Housing        | EXPENSE | Rent, utilities       |
 | 🚗 Transportation | EXPENSE | Gas, public transport |
-| 💰 Salary | INCOME | Primary income |
-| 💼 Freelance | INCOME | Additional income |
+| 💰 Salary         | INCOME  | Primary income        |
+| 💼 Freelance      | INCOME  | Additional income     |
 
 #### Database Schema Inspection
 
 **For H2 (Development):**
+
 ```sql
 -- View all tables
 SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='PUBLIC';
@@ -414,6 +432,7 @@ SELECT * FROM CATEGORIES;
 ```
 
 **For MySQL (Production):**
+
 ```sql
 -- View all tables
 SHOW TABLES;
@@ -428,6 +447,7 @@ SELECT * FROM categories WHERE is_system_category = true;
 ```
 
 ### ⚙️ Core Configuration
+
 ```properties
 # 🌐 Server Configuration
 server.port=8080
@@ -459,6 +479,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ### 🚨 Common Issues & Solutions
 
 #### 1. **Port 8080 Already in Use**
+
 ```bash
 # Find process using port 8080
 lsof -i :8080
@@ -471,6 +492,7 @@ kill -9 <PID>
 ```
 
 #### 2. **Application Won't Start**
+
 ```bash
 # Check Java version (requires Java 17+)
 java -version
@@ -483,6 +505,7 @@ java -version
 ```
 
 #### 3. **Lombok Compilation Errors**
+
 ```bash
 # Verify Lombok is installed
 ./mvnw dependency:tree | grep lombok
@@ -494,6 +517,7 @@ java -version
 ```
 
 #### 4. **H2 Database Issues**
+
 ```bash
 # Check H2 console access
 curl http://localhost:8080/h2-console
@@ -505,6 +529,7 @@ curl http://localhost:8080/h2-console
 ```
 
 #### 5. **JWT Authentication Problems**
+
 ```bash
 # Verify JWT secret configuration
 grep jwt.secret src/main/resources/application.properties
@@ -520,6 +545,7 @@ curl -X POST http://localhost:8080/auth/register \
 ### 🐳 Docker Deployment
 
 #### Build Docker Image
+
 ```bash
 # Create Dockerfile
 cat > Dockerfile << 'EOF'
@@ -537,9 +563,10 @@ docker run -p 8080:8080 expense-tracker
 ```
 
 #### Docker Compose Setup
+
 ```yaml
 # docker-compose.yml
-version: '3.8'
+version: "3.8"
 services:
   expense-tracker:
     build: .
@@ -556,18 +583,39 @@ services:
 
 ### ☁️ Cloud Deployment
 
-#### AWS Deployment (Elastic Beanstalk)
+> ⚠️ **Note**: Cloud deployment configurations below are **future enhancements**. The application currently runs locally or via Docker.
+
+#### 🚀 AWS Deployment (Elastic Beanstalk) - **Future Enhancement**
+
+> **Status**: AWS deployment is **not configured**. The CloudFormation template (`aws-infrastructure.yml`) exists for future use, but infrastructure is **not deployed**.
+
+**Planned AWS Deployment** (When ready for production):
+
 ```bash
 # Install EB CLI
 pip install awsebcli
 
-# Initialize and deploy
+# Initialize and deploy (requires AWS account setup)
 eb init expense-tracker
 eb create expense-tracker-env
 eb deploy
 ```
 
-#### Heroku Deployment
+**Current Deployment Options**:
+- ✅ **Local Development**: `mvn spring-boot:run` (H2 or MySQL)
+- ✅ **Docker**: `docker build && docker run` (see Docker section above)
+- ❌ **AWS Cloud**: **Not configured** - planned for future
+
+**AWS Infrastructure Status**:
+- ✅ CloudFormation template prepared (`aws-infrastructure.yml`)
+- ✅ Deployment scripts available (`deploy-aws.sh`)
+- ❌ AWS account setup: **Not completed**
+- ❌ Infrastructure deployment: **Not deployed**
+
+**Cost Consideration**: AWS production deployment costs **$300-800/month minimum**. Suitable for production environments with high traffic requirements.
+
+#### Heroku Deployment (Alternative)
+
 ```bash
 # Create Procfile
 echo "web: java -Dserver.port=\$PORT -jar target/*.jar" > Procfile
@@ -582,14 +630,16 @@ git push heroku main
 ## 🎯 Roadmap & Next Steps
 
 ### 🏁 Phase 1: Core Features (Current)
+
 - ✅ **Authentication System**: JWT-based user registration and login
-- ✅ **Database Setup**: H2 in-memory database with entity relationships  
+- ✅ **Database Setup**: H2 in-memory database with entity relationships
 - ✅ **API Documentation**: Swagger UI integration
 - ✅ **Security**: BCrypt password hashing, CORS configuration
 - 🔄 **Transaction Management**: CRUD operations for income/expense tracking
 - 🔄 **Category System**: User-defined and system categories
 
 ### 🚀 Phase 2: Advanced Features (Planned)
+
 - 📊 **Financial Reports**: Monthly/yearly spending analysis
 - 📈 **Budget Tracking**: Set limits and get alerts
 - 📱 **Mobile API**: Optimized endpoints for mobile apps
@@ -598,24 +648,38 @@ git push heroku main
 - 🔍 **Search & Filters**: Advanced transaction filtering
 
 ### 🌟 Phase 3: Premium Features (Future)
+
 - 🤖 **AI Insights**: Spending pattern analysis
 - 🏦 **Bank Integration**: Automatic transaction import
 - 👥 **Multi-user Support**: Family expense sharing
 - 📊 **Advanced Analytics**: Machine learning predictions
 - 🌍 **Multi-currency**: International transaction support
 
+### ☁️ Phase 4: Cloud Infrastructure (Future Enhancement)
+
+> ⚠️ **Note**: Cloud infrastructure features below are **planned** but **not currently deployed**.
+
+- 🚀 **AWS Deployment**: EC2, RDS, ElastiCache infrastructure
+- 📊 **Cloud Monitoring**: CloudWatch integration and alerts
+- 🔄 **Event Streaming**: Apache Kafka for async processing
+- 🔁 **CI/CD Pipeline**: Automated deployment workflows
+- ⚡ **Auto-scaling**: Dynamic resource allocation
+- 🌐 **Load Balancing**: Multi-region deployment
+
 ## 📚 Complete API Reference
 
 ### 🔐 Authentication Endpoints
+
 ```http
 POST   /auth/register          # Create new user account
-POST   /auth/login             # Authenticate user  
+POST   /auth/login             # Authenticate user
 GET    /auth/health            # API health check
 POST   /auth/refresh           # Refresh JWT token
 POST   /auth/logout            # Invalidate token
 ```
 
 ### 👤 User Management (Planned)
+
 ```http
 GET    /api/user/profile       # Get user profile
 PUT    /api/user/profile       # Update user profile
@@ -624,6 +688,7 @@ POST   /api/user/change-password # Change password
 ```
 
 ### 💰 Transaction Management (In Development)
+
 ```http
 GET    /api/transactions       # List user transactions
 POST   /api/transactions       # Create new transaction
@@ -634,6 +699,7 @@ GET    /api/transactions/search # Search transactions
 ```
 
 ### 🏷️ Category Management (Planned)
+
 ```http
 GET    /api/categories         # List all categories
 POST   /api/categories         # Create custom category
@@ -642,6 +708,7 @@ DELETE /api/categories/{id}    # Delete category
 ```
 
 ### 📊 Reports & Analytics (Future)
+
 ```http
 GET    /api/reports/monthly    # Monthly spending report
 GET    /api/reports/yearly     # Yearly financial summary
@@ -652,6 +719,7 @@ POST   /api/reports/export     # Export data (CSV/PDF)
 ## 🛡️ Security & Best Practices
 
 ### 🔒 Security Features
+
 - **JWT Authentication**: Stateless token-based auth (24h expiration)
 - **Password Security**: BCrypt hashing with strength 12
 - **CORS Protection**: Configured for cross-origin requests
@@ -660,14 +728,16 @@ POST   /api/reports/export     # Export data (CSV/PDF)
 - **XSS Protection**: Input sanitization and encoding
 
 ### 📋 Best Practices Implemented
+
 - **Clean Architecture**: Layered design with clear separation
 - **DTO Pattern**: Secure data transfer objects
-- **Global Exception Handling**: Consistent error responses  
+- **Global Exception Handling**: Consistent error responses
 - **Database Transactions**: ACID compliance for data integrity
 - **Lombok Integration**: Reduced boilerplate code
 - **Swagger Documentation**: Interactive API testing
 
 ### 🔧 Configuration Security
+
 ```properties
 # Production security settings
 spring.h2.console.enabled=false          # Disable H2 console
@@ -679,21 +749,24 @@ spring.jpa.show-sql=false               # Disable SQL logging
 ## 📄 License & Contributing
 
 ### 📄 License
+
 This project is open source and available under the [MIT License](LICENSE).
 
 ### 🤝 Contributing Guidelines
 
 #### Getting Started
+
 1. **Fork** the repository on GitHub
 2. **Clone** your fork locally
 3. **Create** a feature branch: `git checkout -b feature/amazing-feature`
 4. **Make** your changes following our coding standards
 5. **Test** your changes thoroughly
 6. **Commit** your changes: `git commit -m 'Add amazing feature'`
-7. **Push** to your branch: `git push origin feature/amazing-feature`  
+7. **Push** to your branch: `git push origin feature/amazing-feature`
 8. **Submit** a Pull Request
 
 #### Code Standards
+
 - Follow Java naming conventions
 - Write comprehensive Javadoc comments
 - Add unit tests for new features
@@ -701,6 +774,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - Use meaningful commit messages
 
 #### Reporting Issues
+
 - Use the GitHub issue tracker
 - Provide detailed reproduction steps
 - Include system information (Java version, OS)
@@ -711,12 +785,14 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 🆘 Support & Help
 
 ### 📞 Getting Help
+
 - **📖 Documentation**: Check this README first
 - **🐛 Issues**: Create a GitHub issue for bugs
 - **💡 Features**: Request features via GitHub issues
 - **❓ Questions**: Use GitHub discussions
 
 ### 🔍 Useful Commands
+
 ```bash
 # Check application status
 curl http://localhost:8080/actuator/health
@@ -732,11 +808,12 @@ open http://localhost:8080/swagger-ui.html
 ```
 
 ### 📊 Monitoring & Metrics
+
 ```bash
 # Application metrics
 curl http://localhost:8080/actuator/metrics
 
-# JVM information  
+# JVM information
 curl http://localhost:8080/actuator/info
 
 # Environment variables

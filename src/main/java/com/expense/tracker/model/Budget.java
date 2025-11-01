@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "budgets", 
     indexes = {
-        @Index(name = "idx_user_month_year", columnList = "user_id, month, year"),
-        @Index(name = "idx_category", columnList = "category_id")
+    @Index(name = "idx_budgets_user_month_year", columnList = "user_id, `month`, `year`"),
+    @Index(name = "idx_budgets_category", columnList = "category_id")
     },
     uniqueConstraints = {
         @UniqueConstraint(name = "unique_user_category_month", 
-                         columnNames = {"user_id", "category_id", "month", "year"})
+                         columnNames = {"user_id", "category_id", "`month`", "`year`"})
     }
 )
 @Data
@@ -47,10 +47,10 @@ public class Budget {
     @Column(name = "budget_amount", nullable = false, precision = 15, scale = 2)
     private BigDecimal budgetAmount;
     
-    @Column(name = "month", nullable = false)
+    @Column(name = "`month`", nullable = false)
     private Integer month; // 1-12
     
-    @Column(name = "year", nullable = false) 
+    @Column(name = "`year`", nullable = false) 
     private Integer year;
     
     @Column(name = "created_at", updatable = false)

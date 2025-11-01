@@ -9,10 +9,6 @@ COLLATE utf8mb4_unicode_ci;
 USE expense_tracker;
 
 -- System Categories Seed Data for Smart Expense Tracker
--- This file contains predefined categories for income and expense types
--- These categories are available to all users and cannot be modified
-
--- Note: Using MySQL-specific syntax with ON DUPLICATE KEY UPDATE to prevent errors on re-run
 
 -- Income Categories
 INSERT INTO categories (id, name, type, is_system_category, user_id, created_at) VALUES
